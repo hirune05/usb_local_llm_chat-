@@ -1,8 +1,12 @@
 # LLM
 LLM_MODEL = "gemma4:e2b-it-qat"
 
+import os
+
 # Whisper (STT)
 WHISPER_MODEL_SIZE = "small"
+# USB配布時は WHISPER_MODEL_PATH 環境変数でローカル同梱モデルを指すことでオフライン起動する
+WHISPER_MODEL_PATH = os.environ.get("WHISPER_MODEL_PATH")
 SAMPLE_RATE = 16000
 CHANNELS = 1
 

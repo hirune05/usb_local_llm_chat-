@@ -5,7 +5,7 @@ import numpy as np
 import sounddevice as sd
 from faster_whisper import WhisperModel
 
-from config import CHANNELS, SAMPLE_RATE, WHISPER_MODEL_SIZE
+from config import CHANNELS, SAMPLE_RATE, WHISPER_MODEL_PATH, WHISPER_MODEL_SIZE
 
 # Whisper モデルは全セッションで共有（ロード重いので 1 回だけ）
 _whisper_model: WhisperModel | None = None
@@ -16,13 +16,14 @@ def _get_whisper_model() -> WhisperModel:
     global _whisper_model
     with _whisper_lock:
         if _whisper_model is None:
-            _whisper_model = WhisperModel(WHISPER_MODEL_SIZE)
+            _whisper_model = WhisperModel(WHISPER_MODEL_PATH or WHISPER_MODEL_SIZE)
         return _whisper_model
 
 
 def warmup():
     """Whisper モデルを事前ロードする。"""
-    print(f"--- Whisperモデル {WHISPER_MODEL_SIZE} のウォームアップ中... ---")
+    source = WHISPER_MODEL_PATH or WHISPER_MODEL_SIZE
+    print(f"--- Whisperモデル {source} のウォームアップ中... ---")
     _get_whisper_model()
     print("--- Whisperウォームアップ完了 ---")
 

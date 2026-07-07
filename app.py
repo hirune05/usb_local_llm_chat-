@@ -1,5 +1,12 @@
 import logging
+import multiprocessing
 import os
+import sys
+
+# PyInstaller frozen 環境では multiprocessing の spawn ワーカーが親バイナリを再実行するため、
+# freeze_support() で「ワーカーとして起動された」場合に __main__ を再入させず即 return させる。
+# これを入れないと ctranslate2 等が Process() を作った瞬間に自己複製の無限ループになる。
+multiprocessing.freeze_support()
 
 from flask import Flask, render_template
 
@@ -8,7 +15,8 @@ import voice_recorder
 from config import SECRET_KEY
 from extensions import socketio
 
-DEBUG = True
+# PyInstaller で frozen 化された配布バンドルでは reloader/debugger を無効化して単一プロセス起動する
+DEBUG = not getattr(sys, "frozen", False)
 
 # Socket.IO の polling リクエストでログが埋まるのを抑制
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
@@ -16,7 +24,14 @@ logging.getLogger("werkzeug").setLevel(logging.ERROR)
 # 副作用で @socketio.on(...) ハンドラが登録される
 import sockets  # noqa: E402, F401
 
-app = Flask(__name__, static_folder="static", template_folder=".")
+# PyInstaller で frozen 化された環境では index.html / static/ が sys._MEIPASS 配下に置かれる
+_BASE_DIR = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+
+app = Flask(
+    __name__,
+    static_folder=os.path.join(_BASE_DIR, "static"),
+    template_folder=_BASE_DIR,
+)
 app.config["SECRET_KEY"] = SECRET_KEY
 socketio.init_app(app)
 
@@ -42,5 +57,7 @@ if __name__ == "__main__":
     is_reloader_child = os.environ.get("WERKZEUG_RUN_MAIN") == "true"
     if is_reloader_child or not DEBUG:
         warmup()
-    print("サーバを http://127.0.0.1:5000 で起動します")
-    socketio.run(app, debug=DEBUG, allow_unsafe_werkzeug=True)
+    # macOS の AirPlay Receiver が 5000 を占有するので、USB配布時は APP_PORT で切り替え可能に
+    port = int(os.environ.get("APP_PORT", "5001"))
+    print(f"サーバを http://127.0.0.1:{port} で起動します")
+    socketio.run(app, host="127.0.0.1", port=port, debug=DEBUG, allow_unsafe_werkzeug=True)
