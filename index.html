@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>感情表現システム</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  </head>
+  <body>
+    <div id="main-container">
+      
+      <div id="left-section">
+        <div id="static-canvas-holder"></div>
+      </div>
+      
+      <div id="right-section">
+        <!-- チャットUIコンテナ -->
+        <div id="chat-container">
+          <div id="chat-history"></div>
+          <div id="chat-input-container">
+            <input type="text" id="chat-input" placeholder="メッセージを入力...">
+            <button id="chat-mic">録音</button>
+            <button id="chat-send">送信</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- 起動時カスタマイズモーダル -->
+    <div id="color-modal">
+      <div id="color-modal-content">
+        <h2>外見のカスタマイズ</h2>
+        <div class="swatch-group">
+          <label>肌の色</label>
+          <div class="swatch-grid" id="swatches-face">
+            <button class="swatch selected" data-color="#F3D6ED"></button>
+            <button class="swatch" data-color="#F3D6D7"></button>
+            <button class="swatch" data-color="#F3EDDA"></button>
+            <button class="swatch" data-color="#E5F3D6"></button>
+            <button class="swatch" data-color="#D6F3DD"></button>
+            <button class="swatch" data-color="#D6F3F3"></button>
+            <button class="swatch" data-color="#D6DEF3"></button>
+            <button class="swatch" data-color="#E5D6F3"></button>
+          </div>
+        </div>
+        <div class="swatch-group">
+          <label>瞳の色</label>
+          <div class="swatch-grid" id="swatches-pupil">
+            <button class="swatch selected" data-color="#000000"></button>
+            <button class="swatch" data-color="#732E64"></button>
+            <button class="swatch" data-color="#73622E"></button>
+            <button class="swatch" data-color="#51732E"></button>
+            <button class="swatch" data-color="#2E733E"></button>
+            <button class="swatch" data-color="#2E7373"></button>
+            <button class="swatch" data-color="#2E4173"></button>
+            <button class="swatch" data-color="#512E73"></button>
+          </div>
+        </div>
+        <button id="color-modal-ok">この設定で開始</button>
+      </div>
+    </div>
+
+    <!-- JavaScriptファイルの読み込み順序に注意 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+
+    <script src="/static/js/config/parameters.js"></script>
+    <script src="/static/js/utils/parameter-mapper.js"></script>
+
+    <script src="/static/js/state.js"></script>
+    <script src="/static/js/renderers/canvas-context.js"></script>
+    <script src="/static/js/renderers/eye-renderer.js"></script>
+    <script src="/static/js/renderers/mouth-renderer.js"></script>
+    <script src="/static/js/face-animator.js"></script>
+    <script src="/static/js/chat-ui.js"></script>
+    <script src="/static/js/socket-client.js"></script>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+flask
+flask-socketio
+numpy
+ollama
+faster-whisper
+sounddevice
+requests
+soundfile

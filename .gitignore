@@ -1,0 +1,9 @@
+node_modules/
+emotion_data.csv
+timing_data.csv
+times_data/
+.DS_Store
+*.log
+.venv/
+__pycache__/
+*.pyc
