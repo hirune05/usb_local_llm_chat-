@@ -7,6 +7,8 @@ times_data/
 .venv/
 __pycache__/
 *.pyc
-.claude/
+# .claude/skills/ は共有したいので追跡する。ローカル固有のものだけ除外する。
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
 build/
 dist/
