@@ -116,8 +116,11 @@ rsync -a --delete dist/conversation_app/ "$BUNDLE/app/conversation_app/"
 
 ビルド設定はすべて `app.spec` に書いてある（ネイティブライブラリの収集、
 `index.html`/`static/` の同梱、multiprocessing フックなど）。
-**コード・static・index.html を変更したら必ず再ビルド**すること
-（フロントエンドのJSも exe の中に焼き込まれるため）。
+
+`--onedir` ビルドなので、成果物は単一ファイルではなく `conversation_app/` フォルダになる。
+`index.html` と `static/` は `_internal/` に生のファイルとして置かれ、Flask が起動時にそこから読む
+（`app.py` が `sys._MEIPASS` を見ている）。**Python コードを変更したら再ビルドが必要**だが、
+フロントエンドだけの修正なら `_internal/` にコピーするだけでよい（README「USBの中身を更新する」参照）。
 
 ## 6. ランチャー
 
