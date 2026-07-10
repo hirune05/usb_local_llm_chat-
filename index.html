@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>感情表現システム</title>
     <link rel="stylesheet" href="/static/css/style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <!-- オフライン動作のため CDN ではなく同梱の vendor コピーを読む -->
+    <script src="/static/vendor/p5.min.js"></script>
   </head>
   <body>
     <div id="main-container">
@@ -63,7 +64,7 @@
     </div>
 
     <!-- JavaScriptファイルの読み込み順序に注意 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+    <script src="/static/vendor/socket.io.min.js"></script>
 
     <script src="/static/js/config/parameters.js"></script>
     <script src="/static/js/utils/parameter-mapper.js"></script>

@@ -1,6 +1,8 @@
 // Socket.IO クライアント。サーバーからのイベントを受け取り、状態と UI を更新する。
 
-const socket = io("http://127.0.0.1:5000");
+// 接続先を指定しない場合、今開いているページと同じホスト:ポートに接続される。
+// ポートをハードコードすると APP_PORT を変えたときにチャット・音声が全滅するので固定しない。
+const socket = io();
 
 function setupSocketListeners() {
   let botMessageDiv = null;
