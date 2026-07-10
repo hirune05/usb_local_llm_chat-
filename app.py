@@ -8,6 +8,13 @@ import sys
 # これを入れないと ctranslate2 等が Process() を作った瞬間に自己複製の無限ループになる。
 multiprocessing.freeze_support()
 
+# ログファイルへリダイレクトされると stdout はブロックバッファリングになり、print した内容が
+# なかなかファイルに現れない。現地でのトラブル調査は app_data/logs/ が唯一の手がかりなので、
+# 起動元（USBランチャー / 直接実行）に依存せず常に流れるよう、ここで行バッファリングを指定する。
+for _stream in (sys.stdout, sys.stderr):
+    if _stream is not None:
+        _stream.reconfigure(line_buffering=True)
+
 from flask import Flask, render_template
 
 import llm_chat
